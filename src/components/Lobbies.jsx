@@ -1,34 +1,33 @@
 import { useEffect, useState } from 'react'
-import { Sword, Trophy, Users, CircleDot } from 'lucide-react'
+import { Users } from 'lucide-react'
 
 const API_BASE = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000'
 
-function LobbyCard({ lobby }) {
+function LobbyPill({ lobby }) {
   return (
-    <div className="group relative rounded-2xl border border-white/10 bg-gradient-to-b from-white/5 to-transparent p-5 hover:border-white/20 transition">
-      <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.2),transparent_50%)]" />
-      <div className="relative flex items-start justify-between">
+    <button className="group relative w-full max-w-xl rounded-xl border border-white/10 bg-black px-5 py-4 text-left transition hover:border-emerald-500/50">
+      <div className="absolute inset-0 rounded-xl pointer-events-none opacity-0 group-hover:opacity-100 transition" style={{boxShadow:'0 0 0 1px rgba(16,185,129,0.35), 0 8px 30px rgba(16,185,129,0.08)'}} />
+      <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-xl font-semibold text-white flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <span className="inline-block h-2.5 w-2.5 rounded-full" style={{ backgroundColor: lobby.accent }} />
-            {lobby.title}
-          </h3>
+            <h3 className="text-lg font-medium text-white">{lobby.title}</h3>
+          </div>
           <p className="mt-1 text-sm text-white/60">{lobby.description}</p>
-          <div className="mt-4 flex items-center gap-4 text-white/80 text-sm">
-            <span className="inline-flex items-center gap-1"><Users size={16}/> {lobby.players} players</span>
-            <span className="inline-flex items-center gap-1"><Sword size={16}/> {lobby.difficulty}</span>
-            <span className="inline-flex items-center gap-1"><CircleDot size={16}/> {lobby.status}</span>
+        </div>
+        <div className="text-right">
+          <div className="text-white/80 text-sm inline-flex items-center gap-1"><Users size={16}/> {lobby.players}</div>
+          <div className="mt-1 text-xs text-white/50">{lobby.difficulty} • {lobby.status}</div>
+          <div className="mt-3">
+            <span className="inline-flex items-center rounded-md bg-emerald-600/90 hover:bg-emerald-500 text-white text-xs px-3 py-1.5 transition">Join</span>
           </div>
         </div>
-        <button className="rounded-lg bg-white/10 text-white px-3 py-2 text-sm hover:bg-white/20 transition">
-          Join
-        </button>
       </div>
-    </div>
+    </button>
   )
 }
 
-export default function Lobbies() {
+export default function Lobbies({ centered=false }) {
   const [lobbies, setLobbies] = useState([])
   const [loading, setLoading] = useState(true)
 
@@ -52,14 +51,10 @@ export default function Lobbies() {
   }
 
   return (
-    <section className="mx-auto max-w-7xl px-4 py-10">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl md:text-3xl font-bold text-white">Live Lobbies</h2>
-        <div className="text-amber-300 inline-flex items-center gap-2 text-sm"><Trophy size={16}/> Seasonal Rewards Active</div>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <section className={`${centered ? 'w-full flex flex-col items-center' : ''}`}>
+      <div className="space-y-4">
         {lobbies.map((l) => (
-          <LobbyCard key={l.id} lobby={l} />
+          <LobbyPill key={l.id} lobby={l} />
         ))}
       </div>
     </section>

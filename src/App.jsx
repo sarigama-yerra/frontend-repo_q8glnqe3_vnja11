@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import Hero from './components/Hero'
 import Navbar from './components/Navbar'
 import Lobbies from './components/Lobbies'
 import Wallet from './components/Wallet'
@@ -9,26 +8,21 @@ function App() {
   const [view, setView] = useState('dashboard')
 
   return (
-    <div className="min-h-screen bg-black">
-      <Navbar onNav={setView} />
-      <Hero />
+    <div className="min-h-screen bg-black text-white">
+      <Navbar onNav={setView} current={view} />
 
-      {/* Main content */}
-      <main className="pb-20">
+      <main className="px-4">
         {view === 'dashboard' && (
-          <>
-            <Lobbies />
-          </>
+          <div className="min-h-[70vh] flex items-center justify-center">
+            <Lobbies centered minimal />
+          </div>
         )}
-        {view === 'wallet' && <Wallet />}
-        {view === 'user' && <UserProfile />}
+        {view === 'wallet' && <div className="max-w-7xl mx-auto py-12"><Wallet /></div>}
+        {view === 'user' && <div className="max-w-7xl mx-auto py-12"><UserProfile /></div>}
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-white/10 py-8 text-center text-white/50">
-        <div className="mx-auto max-w-7xl px-4">
-          <p>Neon vibes • Crypto Arcade</p>
-        </div>
+      <footer className="border-t border-white/10 py-6 text-center text-white/50">
+        <p>Crypto Arcade</p>
       </footer>
     </div>
   )
